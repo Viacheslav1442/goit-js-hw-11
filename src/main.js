@@ -6,9 +6,17 @@ import {
     hideLoader,
 } from './js/render-functions';
 
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
+iziToast.success({
+    title: 'OK',
+    message: 'Images loaded successfully!',
+    position: 'topRight',
+});
 
+iziToast.error({
+    title: 'Error',
+    message: 'Sorry, there are no images matching your search query. Please try again!',
+    position: 'topRight',
+});
 const form = document.querySelector('.form');
 const input = form.elements['search-text'];
 
