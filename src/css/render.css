@@ -1,0 +1,22 @@
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.gallery__image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+}
+
+.loader {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.is-hidden {
+    display: none;
+}
