@@ -7,7 +7,7 @@ const loader = document.querySelector('.loader-container');
 let lightbox = new SimpleLightbox('.gallery a');
 
 export function createGallery(images) {
-  const markup = images
+  const markup = image
     .map(
       ({
         webformatURL,
