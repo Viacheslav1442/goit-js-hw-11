@@ -17,7 +17,6 @@
 @import url('./back-link.css');
 @import url('./footer.css');
 @import url('./render.css');
-@import url('./loader.css');
 
 * {
   box-sizing: border-box;
