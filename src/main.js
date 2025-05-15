@@ -1,4 +1,4 @@
-import { getImagesByQuery } from './js/pixabay-api';
+import getImagesByQuery from './js/pixabay-api';
 import {
     createGallery,
     clearGallery,

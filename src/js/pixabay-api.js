@@ -3,7 +3,7 @@ export default function getImagesByQuery(query) {
     const MAIN_URL = 'https://pixabay.com';
     const END_POINT = '/api/';
     const params = new URLSearchParams({
-        key: '50282426-bcbed3422443d463b1ec5299f',
+        key: '50274791-f4b76ab6fee4d49d8c558ca21',
         q: query,
         image_type: 'photo',
         orientation: 'horizontal',
