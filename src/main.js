@@ -7,14 +7,29 @@ import * as all from './js/render-functions';
 
 const container = document.querySelector('.gallery');
 const form = document.querySelector('.form');
+
 form.addEventListener('submit', e => {
     e.preventDefault();
 
-    const userValue = e.target.elements['search-text'].value;
-    all.showLoader();
+    const userValue = e.target.elements['search-text'].value.trim();
+
+    // Перевірка на порожній запит до звернення до API
+    if (userValue === '') {
+        iziToast.show({
+            title: 'Error',
+            message: 'Please enter a search query!',
+            position: 'topRight',
+            color: 'red',
+        });
+        return;
+    }
+
+    all.clearGallery(); // Очищення перед завантаженням нових зображень
+    all.showLoader();   // Показуємо лоадер
+
     getImagesByQuery(userValue)
         .then(data => {
-            if (userValue.trim() === '' || data.length === 0) {
+            if (data.length === 0) {
                 iziToast.show({
                     title: 'Error',
                     message:
@@ -25,16 +40,24 @@ form.addEventListener('submit', e => {
             } else {
                 const markup = all.createGallery(data);
                 container.insertAdjacentHTML('beforeend', markup);
+                new SimpleLightbox('.gallery-item a', {
+                    captionsData: 'alt',
+                    captionDelay: 250,
+                });
             }
+        })
+        .catch(error => {
+            iziToast.show({
+                title: 'Error',
+                message: 'Something went wrong. Please try again later.',
+                position: 'topRight',
+                color: 'red',
+            });
+            console.error(error);
         })
         .finally(() => {
             all.hideLoader();
         });
-    e.target.reset();
-    all.clearGallery();
-});
 
-new SimpleLightbox('.gallery-item a', {
-    captionsData: 'alt',
-    captionDelay: 250,
+    e.target.reset();
 });
