@@ -89,11 +89,11 @@ button[type='submit']:active {
 
 /* Gallery items */
 .gallery-item {
-  border: 1px solid #ddd;
-  padding: 8px;
-  border-radius: 8px;
-  overflow: hidden;
   background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s;
 }
 
 .gallery-item:hover {
@@ -101,21 +101,17 @@ button[type='submit']:active {
 }
 
 .gallery-image {
-  width: 100%;
+  width: 360px;
+  height: 200px;
   display: block;
-  border-radius: 4px;
 }
-
 
 .gallery-info {
-
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  font-size: 14px;
-  padding-top: 6px;
+  padding: 10px 15px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 5px;
 }
-
 
 .gallery-info p {
   font-size: 14px;

@@ -3,60 +3,49 @@ import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import getImagesByQuery from './js/pixabay-api.js';
-import { clearGallery, showLoader, hideLoader, createGallery } from './js/render-functions';
+import * as all from './js/render-functions';
 
 const container = document.querySelector('.gallery');
 const form = document.querySelector('.form');
-
-// Ініціалізація SimpleLightbox один раз
-const lightbox = new SimpleLightbox('.gallery-item a', {
-    captionsData: 'alt',
-    captionDelay: 250,
-});
-
-form.addEventListener('submit', async e => {
+form.addEventListener('submit', e => {
     e.preventDefault();
 
-    const userValue = e.target.elements['search-text'].value.trim();
+    const userValue = e.target.elements['search-text'].value;
+    all.showLoader();
 
-    if (userValue === '') {
+    if (userValue.trim() === '') {
         iziToast.show({
-            title: 'Error',
-            message: 'Please enter a search query!',
+            title: 'Warning',
+            message: 'Please enter a search term before submitting!',
             position: 'topRight',
-            color: 'red',
+            color: 'yellow',
         });
+        e.target.reset();
         return;
     }
-
-    clearGallery();
-    showLoader();
-
-    try {
-        const data = await getImagesByQuery(userValue);
-
-        if (data.length === 0) {
-            iziToast.show({
-                title: 'Error',
-                message:
-                    'Sorry, there are no images matching your search query. Please try again!',
-                position: 'topRight',
-                color: 'red',
-            });
-        } else {
-            createGallery(data);
-            lightbox.refresh(); // Оновлюємо lightbox після вставки HTML
-        }
-    } catch (error) {
-        iziToast.show({
-            title: 'Error',
-            message: 'Something went wrong. Please try again later.',
-            position: 'topRight',
-            color: 'red',
+    all.clearGallery();
+    getImagesByQuery(userValue)
+        .then(data => {
+            if (data.length === 0) {
+                iziToast.show({
+                    title: 'Error',
+                    message:
+                        'Sorry, there are no images matching your search query. Please try again!',
+                    position: 'topRight',
+                    color: 'red',
+                });
+            } else {
+                const markup = all.createGallery(data);
+                container.insertAdjacentHTML('beforeend', markup);
+            }
+        })
+        .finally(() => {
+            all.hideLoader();
         });
-        console.error(error);
-    } finally {
-        hideLoader();
-        e.target.reset();
-    }
+    e.target.reset();
+});
+
+new SimpleLightbox('.gallery-item a', {
+    captionsData: 'alt',
+    captionDelay: 250,
 });
