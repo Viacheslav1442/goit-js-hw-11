@@ -1,17 +1,7 @@
-export function clearGallery() {
-  const container = document.querySelector('.gallery');
-  container.innerHTML = '';
-}
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
-export function showLoader() {
-  const loader = document.querySelector('.loader');
-  if (loader) loader.classList.remove('hidden');
-}
-
-export function hideLoader() {
-  const loader = document.querySelector('.loader');
-  if (loader) loader.classList.add('hidden');
-}
+let lightbox;
 
 export function createGallery(images) {
   const container = document.querySelector('.gallery');
@@ -20,13 +10,29 @@ export function createGallery(images) {
     .map(
       img => `
         <div class="gallery-item">
-          <a href="${img.largeImageURL}">
-            <img src="${img.webformatURL}" alt="${img.tags}" />
+          <a class="gallery-link" href="${img.largeImageURL}">
+            <img class="gallery-image" src="${img.webformatURL}" alt="${img.tags}" />
           </a>
+          <div class="info">
+            <p><b>Likes:</b> ${img.likes}</p>
+            <p><b>Views:</b> ${img.views}</p>
+            <p><b>Comments:</b> ${img.comments}</p>
+            <p><b>Downloads:</b> ${img.downloads}</p>
+          </div>
         </div>
       `
     )
     .join('');
 
   container.insertAdjacentHTML('beforeend', markup);
+
+  // Ініціалізація або оновлення екземпляра SimpleLightbox
+  if (lightbox) {
+    lightbox.refresh();
+  } else {
+    lightbox = new SimpleLightbox('.gallery a', {
+      captionsData: 'alt',
+      captionDelay: 250,
+    });
+  }
 }
